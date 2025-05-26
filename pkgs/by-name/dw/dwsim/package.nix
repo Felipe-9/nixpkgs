@@ -1,4 +1,7 @@
 with import <nixpkgs> { };
+{
+  lib,
+}:
 let
   pname = "dwsim";
   version = "9.0.2";
@@ -7,19 +10,19 @@ in
 buildDotnetModule {
   inherit pname version;
 
-  meta = with lib; {
+  meta = {
     inherit description;
     mainProgram = pname;
     homepage = "https://github.com/DanWBR/dwsim";
-    license = licenses.gpl3;
-    sourceProvenance = [ sourceTypes.fromSource ];
-    maintainers = with maintainers; [ felipe-9 ];
-    platforms = platforms.linux;
+    license = lib.licenses.gpl3;
+    sourceProvenance = [ lib.sourceTypes.fromSource ];
+    maintainers = [ lib.maintainers.felipe-9 ];
+    platforms = lib.platforms.linux;
   };
 
   src = fetchFromGitHub {
     owner = "DanWBR";
-    repo = "dwsim";
+    repo = pname;
     tag = "v${version}";
     sha256 = "sha256-WVe8cVJXYl1cyH4tbs0eWumvOwqgJA+fXQphn0LUsXk=";
   };
@@ -85,7 +88,7 @@ buildDotnetModule {
     ipopt
     mono
     gtk3
-      nuget
+    nuget
   ];
 
   testProjectFile = [
