@@ -1,6 +1,14 @@
 with import <nixpkgs> { };
 {
   lib,
+  buildDotnetModule,
+  dotnetCorePackages,
+  fetchFromGitHub,
+
+# ipopt,
+# mono,
+# gtk3,
+# nuget,
 }:
 let
   pname = "dwsim";
@@ -26,6 +34,9 @@ buildDotnetModule {
     tag = "v${version}";
     sha256 = "sha256-WVe8cVJXYl1cyH4tbs0eWumvOwqgJA+fXQphn0LUsXk=";
   };
+
+  buildInputs = [
+  ];
 
   projectFile = "DWSIM.sln";
 
@@ -75,16 +86,22 @@ buildDotnetModule {
   # ];
 
   nugetDeps = ./deps.json;
+  # packNupkg = true;
 
-  # dotnet-sdk = dotnetCorePackages.dotnet_8.sdk;
-  # dotnet-runtime = dotnetCorePackages.dotnet_8.runtime;
-  dotnet-sdk = dotnetCorePackages.sdk_9_0-bin;
   # dotnet-sdk = mono;
-  dotnet-runtime = dotnetCorePackages.runtime_9_0-bin;
+  dotnet-sdk = dotnetCorePackages.sdk_8_0;
+  dotnet-runtime = dotnetCorePackages.runtime_8_0;
 
-  executables = "DWSIM.exe";
+  executables = [ "DWSIM.exe" ];
 
   runtimeDeps = [
+    # (
+    #   with dotnetCorePackages;
+    #   combinePackages [
+    #     sdk_8_0
+    #     sdk_9_0
+    #   ]
+    # )
     ipopt
     mono
     gtk3
